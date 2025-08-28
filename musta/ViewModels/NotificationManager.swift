@@ -159,4 +159,19 @@ class NotificationManager: ObservableObject {
             }
         }
     }
+    
+    // Helper function to format time for display in 12-hour AM/PM format
+    static func formatTimeForDisplay(_ timeString: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        
+        if let date = formatter.date(from: timeString) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateFormat = "hh:mm a"
+            displayFormatter.locale = Locale(identifier: "en_US")
+            return displayFormatter.string(from: date)
+        }
+        
+        return timeString
+    }
 }

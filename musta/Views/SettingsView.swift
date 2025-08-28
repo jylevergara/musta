@@ -130,7 +130,7 @@ struct NotificationTimeRowView: View {
             ))
             
             VStack(alignment: .leading, spacing: 2) {
-                Text(notificationTime.time)
+                Text(NotificationManager.formatTimeForDisplay(notificationTime.time))
                     .font(.headline)
                 
                 if notificationTime.isCustom {
@@ -184,6 +184,11 @@ struct AddNotificationTimeView: View {
                 .datePickerStyle(WheelDatePickerStyle())
                 .padding()
                 
+                Text("Selected time: \(formatSelectedTime(selectedTime))")
+                    .font(.headline)
+                    .foregroundColor(.blue)
+                    .padding(.bottom)
+                
                 Spacer()
             }
             .navigationTitle("Add Notification Time")
@@ -206,6 +211,13 @@ struct AddNotificationTimeView: View {
                 }
             }
         }
+    }
+    
+    private func formatSelectedTime(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: date)
     }
 }
 
@@ -237,6 +249,11 @@ struct EditNotificationTimeView: View {
                 .datePickerStyle(WheelDatePickerStyle())
                 .padding()
                 
+                Text("Selected time: \(formatSelectedTime(selectedTime))")
+                    .font(.headline)
+                    .foregroundColor(.blue)
+                    .padding(.bottom)
+                
                 Spacer()
             }
             .navigationTitle("Edit Time")
@@ -259,6 +276,13 @@ struct EditNotificationTimeView: View {
                 }
             }
         }
+    }
+    
+    private func formatSelectedTime(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: date)
     }
 }
 
