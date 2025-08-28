@@ -31,7 +31,7 @@ class NotificationManager: ObservableObject {
     }
     
     func addNotificationTime(_ time: String) {
-        let newId = notificationTimes.map { $0.id }.max() ?? 0 + 1
+        let newId = (notificationTimes.map { $0.id }.max() ?? 0) + 1
         let notificationID = "musta_notification_\(newId)"
         
         let newTime = NotificationTime(

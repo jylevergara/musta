@@ -60,8 +60,10 @@ struct SettingsView: View {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)
                                 Text("Add Custom Time")
+                                    .foregroundColor(.green)
                             }
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 
@@ -124,11 +126,7 @@ struct NotificationTimeRowView: View {
     
     var body: some View {
         HStack {
-            Toggle("", isOn: Binding(
-                get: { notificationTime.isEnabled },
-                set: { _ in onToggle() }
-            ))
-            
+            // Time and label on the left
             VStack(alignment: .leading, spacing: 2) {
                 Text(NotificationManager.formatTimeForDisplay(notificationTime.time))
                     .font(.headline)
@@ -146,14 +144,24 @@ struct NotificationTimeRowView: View {
             
             Spacer()
             
+            // Edit button for custom times
             if notificationTime.isCustom {
                 Button(action: {
                     isEditing = true
                 }) {
                     Image(systemName: "pencil")
                         .foregroundColor(.blue)
+                        .font(.system(size: 16))
                 }
+                .buttonStyle(PlainButtonStyle())
             }
+            
+            // Toggle on the right
+            Toggle("", isOn: Binding(
+                get: { notificationTime.isEnabled },
+                set: { _ in onToggle() }
+            ))
+            .labelsHidden()
         }
         .sheet(isPresented: $isEditing) {
             EditNotificationTimeView(
@@ -175,9 +183,9 @@ struct AddNotificationTimeView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 20) {
                 DatePicker(
-                    "Select Time",
+                    "",
                     selection: $selectedTime,
                     displayedComponents: .hourAndMinute
                 )
@@ -191,6 +199,7 @@ struct AddNotificationTimeView: View {
                 
                 Spacer()
             }
+            .padding()
             .navigationTitle("Add Notification Time")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -208,6 +217,7 @@ struct AddNotificationTimeView: View {
                         onAdd(timeString)
                         isPresented = false
                     }
+                    .fontWeight(.semibold)
                 }
             }
         }
@@ -240,22 +250,23 @@ struct EditNotificationTimeView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 20) {
                 DatePicker(
-                    "Select Time",
+                    "",
                     selection: $selectedTime,
                     displayedComponents: .hourAndMinute
                 )
                 .datePickerStyle(WheelDatePickerStyle())
                 .padding()
                 
-                Text("Selected time: \(formatSelectedTime(selectedTime))")
+                Text("Selected time hello: \(formatSelectedTime(selectedTime))")
                     .font(.headline)
                     .foregroundColor(.blue)
                     .padding(.bottom)
                 
                 Spacer()
             }
+            .padding()
             .navigationTitle("Edit Time")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -273,6 +284,7 @@ struct EditNotificationTimeView: View {
                         onSave(timeString)
                         isPresented = false
                     }
+                    .fontWeight(.semibold)
                 }
             }
         }
