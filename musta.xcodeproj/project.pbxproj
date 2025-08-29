@@ -399,7 +399,7 @@
 				DEVELOPMENT_TEAM = 9YWK4M9AAJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSUserNotificationUsageDescription = "Musta uses notifications to send you daily language learning reminders with random phrases from your selected language.";
+				INFOPLIST_KEY_NSUserNotificationsUsageDescription = "Musta uses notifications to send you daily language learning reminders with random phrases from your selected language.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -429,7 +429,7 @@
 				DEVELOPMENT_TEAM = 9YWK4M9AAJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSUserNotificationUsageDescription = "Musta uses notifications to send you daily language learning reminders with random phrases from your selected language.";
+				INFOPLIST_KEY_NSUserNotificationsUsageDescription = "Musta uses notifications to send you daily language learning reminders with random phrases from your selected language.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
