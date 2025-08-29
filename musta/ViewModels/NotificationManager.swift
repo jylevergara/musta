@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UserNotifications
 
 class NotificationManager: ObservableObject {
     static let shared = NotificationManager()
@@ -15,6 +16,26 @@ class NotificationManager: ObservableObject {
         loadNotificationTimes()
         checkPermissionStatus()
         setupDefaultTimes()
+        
+        // Listen for app becoming active to refresh permission status
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func appDidBecomeActive() {
+        checkPermissionStatus()
+    }
+    
+    func refreshPermissionStatus() {
+        checkPermissionStatus()
     }
     
     func requestPermission() {

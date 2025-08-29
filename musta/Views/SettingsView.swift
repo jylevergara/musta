@@ -3,33 +3,11 @@ import SwiftUI
 struct SettingsView: View {
     @StateObject private var notificationManager = NotificationManager.shared
     @State private var showingAddTimeSheet = false
-    @State private var showingPermissionAlert = false
     @State private var newTime = Date()
     
     var body: some View {
         NavigationView {
             List {
-                Section(header: Text("Notifications")) {
-                    HStack {
-                        Image(systemName: "bell")
-                            .foregroundColor(.blue)
-                        Text("Daily Reminders")
-                        Spacer()
-                        if !notificationManager.isPermissionGranted {
-                            Button("Enable") {
-                                requestPermission()
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                    }
-                    
-                    if !notificationManager.isPermissionGranted {
-                        Text("Enable notifications to receive daily language learning reminders")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
-                
                 if notificationManager.isPermissionGranted {
                     Section(header: Text("Notification Times")) {
                         ForEach(notificationManager.notificationTimes) { notificationTime in
@@ -89,6 +67,9 @@ struct SettingsView: View {
             .listStyle(InsetGroupedListStyle())
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.large)
+            .onAppear {
+                notificationManager.refreshPermissionStatus()
+            }
             .sheet(isPresented: $showingAddTimeSheet) {
                 AddNotificationTimeView(
                     isPresented: $showingAddTimeSheet,
@@ -97,21 +78,7 @@ struct SettingsView: View {
                     }
                 )
             }
-            .alert("Enable Notifications", isPresented: $showingPermissionAlert) {
-                Button("Settings") {
-                    if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
-                        UIApplication.shared.open(settingsUrl)
-                    }
-                }
-                Button("Cancel", role: .cancel) { }
-            } message: {
-                Text("Please enable notifications in Settings to receive daily language learning reminders.")
-            }
         }
-    }
-    
-    private func requestPermission() {
-        notificationManager.requestPermission()
     }
 }
 
