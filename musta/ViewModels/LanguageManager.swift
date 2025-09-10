@@ -12,7 +12,6 @@ class LanguageManager: ObservableObject {
     
     init() {
         loadLanguages()
-        loadSelectedLanguage()
     }
     
     func loadLanguages() {
@@ -28,6 +27,9 @@ class LanguageManager: ObservableObject {
                 
                 if loadedLanguages.isEmpty {
                     self.errorMessage = "Failed to load languages"
+                } else {
+                    // Load the selected language after languages are loaded
+                    self.loadSelectedLanguage()
                 }
             }
         }
@@ -39,6 +41,8 @@ class LanguageManager: ObservableObject {
         
         // Update notifications for the new language
         NotificationManager.shared.updateNotificationsForLanguage(language.id)
+        
+        print("Language set to: \(language.name) (\(language.id))")
     }
     
     private func loadSelectedLanguage() {

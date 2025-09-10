@@ -46,32 +46,33 @@ struct LanguageRowView: View {
     let onTap: () -> Void
     
     var body: some View {
-        Button(action: onTap) {
-            HStack {
-                Text(language.flag)
-                    .font(.title)
+        HStack {
+            Text(language.flag)
+                .font(.title)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(language.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
                 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(language.name)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                    
-                    Text(language.nativeName)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                
-                Spacer()
-                
-                if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.blue)
-                        .font(.title2)
-                }
+                Text(language.nativeName)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
-            .padding(.vertical, 4)
+            
+            Spacer()
+            
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(.blue)
+                    .font(.title2)
+            }
         }
-        .buttonStyle(PlainButtonStyle())
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onTap()
+        }
     }
 }
 
