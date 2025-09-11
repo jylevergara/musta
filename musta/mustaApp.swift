@@ -12,6 +12,11 @@ import UserNotifications
 struct mustaApp: App {
     @StateObject private var notificationManager = NotificationManager.shared
     
+    init() {
+        // Set up the notification center delegate
+        UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

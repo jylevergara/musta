@@ -42,7 +42,6 @@ class LanguageManager: ObservableObject {
         // Update notifications for the new language
         NotificationManager.shared.updateNotificationsForLanguage(language.id)
         
-        print("Language set to: \(language.name) (\(language.id))")
     }
     
     private func loadSelectedLanguage() {

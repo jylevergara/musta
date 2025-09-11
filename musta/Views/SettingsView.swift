@@ -8,7 +8,33 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             List {
-                if notificationManager.isPermissionGranted {
+                if !notificationManager.isPermissionGranted {
+                    Section(header: Text("Notifications")) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Enable notifications to get reminded to practice your language skills!")
+                                .font(.body)
+                                .foregroundColor(.secondary)
+                            
+                            Button(action: {
+                                notificationManager.requestPermission()
+                            }) {
+                                HStack {
+                                    Image(systemName: "bell")
+                                        .foregroundColor(.white)
+                                    Text("Enable Notifications")
+                                        .foregroundColor(.white)
+                                        .fontWeight(.semibold)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                        .padding(.vertical, 4)
+                    }
+                } else {
                     Section(header: Text("Notification Times")) {
                         ForEach(notificationManager.notificationTimes) { notificationTime in
                             NotificationTimeRowView(
