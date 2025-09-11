@@ -46,7 +46,6 @@ class NotificationManager: ObservableObject {
                 
                 if granted {
                     self?.scheduleAllNotifications()
-                }
             }
         }
     }
@@ -175,8 +174,14 @@ class NotificationManager: ObservableObject {
     private func checkPermissionStatus() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
+                let wasGranted = self.isPermissionGranted
                 self.isPermissionGranted = settings.authorizationStatus == .authorized
                 self.userDefaults.set(self.isPermissionGranted, forKey: self.permissionKey)
+                
+                // If permission was just granted or we have permission but no notifications scheduled
+                if self.isPermissionGranted && (!wasGranted || self.notificationTimes.contains { $0.isEnabled }) {
+                    self.scheduleAllNotifications()
+                }
             }
         }
     }

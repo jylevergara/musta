@@ -30,6 +30,7 @@ class NotificationService {
         }
         
         content.sound = .default
+        content.badge = 1
         
         // Parse time string (format: "HH:mm")
         let timeComponents = time.split(separator: ":")
@@ -40,16 +41,32 @@ class NotificationService {
             return
         }
         
+        // Create date components with current calendar
         var dateComponents = DateComponents()
         dateComponents.hour = hour
         dateComponents.minute = minute
+        dateComponents.second = 0
         
+        // Create the trigger
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
         
+        // Add the notification request
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Error scheduling notification: \(error)")
+            } else {
+                print("Successfully scheduled notification for \(time) with ID: \(notificationID)")
+                
+                // Debug: Print pending notifications
+                UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                    print("Total pending notifications: \(requests.count)")
+                    for request in requests {
+                        if let trigger = request.trigger as? UNCalendarNotificationTrigger {
+                            print("Notification ID: \(request.identifier), Time: \(trigger.dateComponents)")
+                        }
+                    }
+                }
             }
         }
     }
