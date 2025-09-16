@@ -21,10 +21,17 @@ class NotificationService {
         let content = UNMutableNotificationContent()
         content.title = "Time to learn a new phrase 🤓"
         
-        // Get random phrase from the language
-        if let language = getLanguageById(languageId),
-           let randomPhrase = language.phrases.randomElement() {
-            content.body = "\(randomPhrase.phrase) - \(randomPhrase.translation)"
+        // Get random phrase from the SPECIFIC language only
+        if let language = getLanguageById(languageId) {
+            if !language.phrases.isEmpty {
+                if let randomPhrase = language.phrases.randomElement() {
+                    content.body = "\(randomPhrase.phrase) - \(randomPhrase.translation)"
+                } else {
+                    content.body = "Time to practice \(language.name)!"
+                }
+            } else {
+                content.body = "Time to practice \(language.name)!"
+            }
         } else {
             content.body = "Time to practice your language skills!"
         }
@@ -80,6 +87,8 @@ class NotificationService {
     }
     
     private func getLanguageById(_ id: String) -> Language? {
-        return DataService.shared.loadLanguages().first { $0.id == id }
+        // Load languages from DataService to ensure we get the most current data
+        let languages = DataService.shared.loadLanguages()
+        return languages.first { $0.id == id }
     }
 }
