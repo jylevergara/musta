@@ -36,12 +36,14 @@ class LanguageManager: ObservableObject {
     }
     
     func setLanguage(_ language: Language) {
+        let previousLanguage = currentLanguage
         currentLanguage = language
         userDefaults.set(language.id, forKey: selectedLanguageKey)
         
         // Update notifications for the new language
         NotificationManager.shared.updateNotificationsForLanguage(language.id)
         
+        print("Language changed from '\(previousLanguage?.name ?? "none")' to '\(language.name)' - notifications updated")
     }
     
     private func loadSelectedLanguage() {

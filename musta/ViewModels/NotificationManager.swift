@@ -46,6 +46,7 @@ class NotificationManager: ObservableObject {
                 
                 if granted {
                     self?.scheduleAllNotifications()
+                }
             }
         }
     }
@@ -116,7 +117,10 @@ class NotificationManager: ObservableObject {
     }
     
     func updateNotificationsForLanguage(_ languageId: String) {
-        guard isPermissionGranted else { return }
+        guard isPermissionGranted else { 
+            print("Notification permission not granted, cannot update notifications for language: \(languageId)")
+            return 
+        }
         
         // Cancel all existing notifications
         NotificationService.shared.cancelAllNotifications()
@@ -125,12 +129,27 @@ class NotificationManager: ObservableObject {
         for notificationTime in notificationTimes where notificationTime.isEnabled {
             scheduleNotification(for: notificationTime, languageId: languageId)
         }
+        
+        print("Updated all notifications for language: \(languageId)")
     }
     
     private func scheduleNotification(for notificationTime: NotificationTime, languageId: String? = nil) {
         guard let notificationID = notificationTime.notificationID else { return }
         
-        let currentLanguageId = languageId ?? "fil"
+        // Use provided languageId, or get current language from shared LanguageManager instance, or fallback to "fil"
+        let currentLanguageId: String
+        if let providedLanguageId = languageId {
+            currentLanguageId = providedLanguageId
+        } else {
+            // Get the current language from UserDefaults directly to avoid creating new LanguageManager instance
+            let userDefaults = UserDefaults.standard
+            if let selectedLanguageId = userDefaults.string(forKey: "selectedLanguageId") {
+                currentLanguageId = selectedLanguageId
+            } else {
+                currentLanguageId = "fil" // Fallback to Filipino
+            }
+        }
+        
         NotificationService.shared.scheduleNotification(
             for: notificationTime.time,
             languageId: currentLanguageId,
